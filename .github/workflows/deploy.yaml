@@ -56,7 +56,7 @@ jobs:
           KUBECONFIG: ./kubeconfig.yaml
         if: success() && steps.verify_cluster.outcome == 'success'
         run: |
-          cat <<EOF > user-overrides.yaml
+          cat <<EOF > values-user-overrides.yaml
           replicaCount: "${{ github.event.inputs.replica }}"
           image:
             repository: nginx
