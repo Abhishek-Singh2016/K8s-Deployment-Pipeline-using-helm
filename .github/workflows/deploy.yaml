@@ -36,6 +36,10 @@ jobs:
 
       - name: Install Helm
         uses: azure/setup-helm@v3
+        with:
+          version: 'latest' # Or a specific version like 'v3.12.0'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Verify Cluster Connection
         id: verify_cluster
