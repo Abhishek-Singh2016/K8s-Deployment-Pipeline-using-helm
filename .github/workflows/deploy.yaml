@@ -1,0 +1,39 @@
+name: Deploy Ace App
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select Environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Log in to your K8s cluster (Generic example for AWS/GCP/Azure)
+      - name: Set up Kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG_DATA }}" > kubeconfig.yaml
+          export KUBECONFIG=$PWD/kubeconfig.yaml
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Deploy to Kubernetes
+        run: |
+          # Use the -f flag to point to the environment-specific values file
+          helm upgrade --install ace-app-${{ github.event.inputs.environment }} ./ace-app-chart \
+            --namespace ${{ github.event.inputs.environment }} \
+            --create-namespace \
+            -f ./ace-app-chart/values-${{ github.event.inputs.environment }}.yaml \
+            --set image.tag=${{ github.sha }}
