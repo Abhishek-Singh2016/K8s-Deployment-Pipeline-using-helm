@@ -37,7 +37,12 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v3
 
+      - name: Verify Cluster Connection
+        id: verify_cluster
+        run: kubectl cluster-info
+
       - name: Create Dynamic Overrides
+        if: success() && steps.verify_cluster.outcome == 'success'
         run: |
           cat <<EOF > user-overrides.yaml
           replicaCount: "${{ github.event.inputs.replica }}"
@@ -47,7 +52,7 @@ jobs:
             # Overrides the image tag whose default is the chart appVersion.
             tag: "latest"
           nameOverride: "abhishek-helm-deployment"
-            fullnameOverride: "abhishek-helm-deployment"
+          fullnameOverride: "abhishek-helm-deployment"
           customAnnotations:
             deployed-by: "${{ github.actor }}"
             reason: "${{ github.event.inputs.reason }}"
