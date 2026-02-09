@@ -82,5 +82,5 @@ jobs:
           helm upgrade --install helm-app-${{ github.event.inputs.environment }} ./app-deploy \
             --namespace ${{ github.event.inputs.environment }} \
             --create-namespace \
-            -f ./ace-app-chart/values-user-overrides.yaml \
+            -f ./values-user-overrides.yaml \
             --set image.tag=${{ github.sha }}
