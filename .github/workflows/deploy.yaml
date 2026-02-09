@@ -69,7 +69,7 @@ jobs:
             deployed-by: "${{ github.actor }}"
             reason: "${{ github.event.inputs.reason }}"
           EOF
-          pwd;ls -la;cat user-overrides.yaml
+          pwd;ls -la;cat values-user-overrides.yaml
 
 
       - name: Deploy to Kubernetes
