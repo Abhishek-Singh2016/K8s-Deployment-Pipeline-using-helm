@@ -1,4 +1,4 @@
-name: Deploy Ace App
+name: Deploy helm App
 
 on:
   workflow_dispatch:
@@ -12,6 +12,14 @@ on:
           - dev
           - staging
           - prod
+      replica:
+        description: 'Number of Replicas'
+        required: true
+        default: '2'
+      reason:
+        description: 'Reason for Deployment'
+        required: false
+        default: 'Routine update'
 
 jobs:
   deploy:
@@ -29,11 +37,28 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v3
 
+      - name: Create Dynamic Overrides
+        run: |
+          cat <<EOF > user-overrides.yaml
+          replicaCount: "${{ github.event.inputs.replica }}"
+          image:
+            repository: nginx
+            pullPolicy: IfNotPresent
+            # Overrides the image tag whose default is the chart appVersion.
+            tag: "latest"
+          nameOverride: "abhishek-helm-deployment"
+            fullnameOverride: "abhishek-helm-deployment"
+          customAnnotations:
+            deployed-by: "${{ github.actor }}"
+            reason: "${{ github.event.inputs.reason }}"
+          EOF
+
+
       - name: Deploy to Kubernetes
         run: |
           # Use the -f flag to point to the environment-specific values file
           helm upgrade --install ace-app-${{ github.event.inputs.environment }} ./ace-app-chart \
             --namespace ${{ github.event.inputs.environment }} \
             --create-namespace \
-            -f ./ace-app-chart/values-${{ github.event.inputs.environment }}.yaml \
+            -f ./ace-app-chart/values-user-overrides.yaml \
             --set image.tag=${{ github.sha }}
