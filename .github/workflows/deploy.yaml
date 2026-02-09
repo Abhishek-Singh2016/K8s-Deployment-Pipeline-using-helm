@@ -1,5 +1,6 @@
 name: Deploy helm App
 
+
 on:
   workflow_dispatch:
     inputs:
@@ -72,6 +73,9 @@ jobs:
 
 
       - name: Deploy to Kubernetes
+        env:
+          # This variable tells Helm/Kubectl where to look
+          KUBECONFIG: ./kubeconfig.yaml        
         run: |
           pwd;ls -la;
           # Use the -f flag to point to the environment-specific values file
