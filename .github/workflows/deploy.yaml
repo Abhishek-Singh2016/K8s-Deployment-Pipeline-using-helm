@@ -57,7 +57,7 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           # Use the -f flag to point to the environment-specific values file
-          helm upgrade --install ace-app-${{ github.event.inputs.environment }} ./ace-app-chart \
+          helm upgrade --install helm-app-${{ github.event.inputs.environment }} ./app-deploy \
             --namespace ${{ github.event.inputs.environment }} \
             --create-namespace \
             -f ./ace-app-chart/values-user-overrides.yaml \
