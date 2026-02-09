@@ -63,8 +63,8 @@ jobs:
             pullPolicy: IfNotPresent
             # Overrides the image tag whose default is the chart appVersion.
             tag: "latest"
-          nameOverride: "abhishek-helm-deployment"
-          fullnameOverride: "abhishek-helm-deployment"
+          nameOverride: "abhishek-helm-deployment-${{github.run_number}}"
+          fullnameOverride: "abhishek-helm-deployment-${{github.run_number}}"
           customAnnotations:
             deployed-by: "${{ github.actor }}"
             reason: "${{ github.event.inputs.reason }}"
@@ -82,5 +82,4 @@ jobs:
           helm upgrade --install helm-app-${{ github.event.inputs.environment }} ./app-deploy \
             --namespace ${{ github.event.inputs.environment }} \
             --create-namespace \
-            -f ./values-user-overrides.yaml \
-            --set image.tag=${{ github.sha }}
+            -f ./values-user-overrides.yaml 
