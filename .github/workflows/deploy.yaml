@@ -92,8 +92,8 @@ jobs:
           export dockerConfigJson=$(base64 -w 0 <<< "{\"auths\":{\"$REGISTRY_URL\":{\"username\":\"AWS\",\"password\":\"$ECR_PASSWORD\"}}}")          
           echo "Docker Config JSON: $dockerConfigJson"
           cd Environments
-          envsubst < values-${{ github.event.inputs.environment }}.yaml > values-prod.yaml
-          cat values-prod.yaml 
+          envsubst < values-${{ github.event.inputs.environment }}-template.yaml > values-prod.yaml
+          cat values-prod.yaml
           pwd;ls -la;
           cd ..
 
