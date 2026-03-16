@@ -84,4 +84,4 @@ jobs:
             --namespace ${{ github.event.inputs.environment }} \
             --create-namespace \
             -f ./values-user-overrides.yaml \
-            --dry-run --debug test
+            --dry-run --debug
