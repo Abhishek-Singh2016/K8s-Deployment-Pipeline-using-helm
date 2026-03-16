@@ -89,8 +89,13 @@ jobs:
         run: |
           export REGISTRY_URL="702175642104.dkr.ecr.us-east-1.amazonaws.com/abhishek-ecr/abhishek-ecr"
           export ECR_PASSWORD=$(aws ecr get-login-password --region us-east-1)
-          echo "{\"auths\":{\"$REGISTRY_URL\":{\"username\":\"AWS\",\"password\":\"$ECR_PASSWORD\"}}}" | base64 -w 0
+          export dockerConfigJson="{\"auths\":{\"$REGISTRY_URL\":{\"username\":\"AWS\",\"password\":\"$ECR_PASSWORD\"}}}" | base64 -w 0
+          echo "Docker Config JSON: $dockerConfigJson"
+          envsubst < ./Environments/values-${{ github.event.inputs.environment }}.yaml > values-prod.yaml
+          cat ./Environments/values-values-prod.yaml 
           pwd;ls -la;
+
+
           # Use the -f flag to point to the environment-specific values file
           #helm upgrade install --dry-run --debug test .
           helm upgrade --install helm-app-${{ github.event.inputs.environment }} ./app-deploy \
