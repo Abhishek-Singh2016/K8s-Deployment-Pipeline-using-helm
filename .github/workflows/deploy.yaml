@@ -93,7 +93,7 @@ jobs:
           echo "Docker Config JSON: $dockerConfigJson"
           cd Environments
           envsubst < values-${{ github.event.inputs.environment }}.yaml > values-prod.yaml
-          cat values-values-prod.yaml 
+          cat values-prod.yaml 
           pwd;ls -la;
 
 
