@@ -19,7 +19,7 @@ secrets:
     REDIS_PASS: redis@1234
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-imagePullSecrets: ["test-app-deploy"]
+imagePullSecrets: ["name: test-app-deploy"]
 # This is to override the chart name.
 nameOverride: "abhishek-helm-deployment"
 fullnameOverride: "abhishek-helm-development"
