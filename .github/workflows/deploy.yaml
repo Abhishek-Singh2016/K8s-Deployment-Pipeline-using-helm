@@ -79,7 +79,9 @@ jobs:
         run: |
           pwd;ls -la;
           # Use the -f flag to point to the environment-specific values file
+          #helm upgrade install --dry-run --debug test .
           helm upgrade --install helm-app-${{ github.event.inputs.environment }} ./app-deploy \
             --namespace ${{ github.event.inputs.environment }} \
             --create-namespace \
-            -f ./values-user-overrides.yaml 
+            -f ./values-user-overrides.yaml \
+            --dry-run --debug test
