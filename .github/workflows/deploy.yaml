@@ -25,6 +25,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # Required for OIDC
+      contents: read    # Required for Checkout
 
     steps:
       - name: Checkout code
