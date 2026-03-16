@@ -7,17 +7,22 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: nginx
+  repository: 702175642104.dkr.ecr.us-east-1.amazonaws.com/abhishek-ecr/abhishek-ecr
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "Python-mysql-app-v1.0.16"
+
+secrets:
+  enabled: true
+  values:
+    REDIS_PASS: redis@1234
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-imagePullSecrets: []
+imagePullSecrets: ["test-app-deploy"]
 # This is to override the chart name.
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: "abhishek-helm-deployment"
+fullnameOverride: "abhishek-helm-development"
 
 # This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
