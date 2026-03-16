@@ -25,6 +25,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -71,12 +72,21 @@ jobs:
           EOF
           pwd;ls -la;cat values-user-overrides.yaml
 
+      
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
 
       - name: Deploy to Kubernetes
         env:
           # This variable tells Helm/Kubectl where to look
           KUBECONFIG: ./kubeconfig.yaml        
         run: |
+          export REGISTRY_URL="702175642104.dkr.ecr.us-east-1.amazonaws.com/abhishek-ecr/abhishek-ecr"
+          export ECR_PASSWORD=$(aws ecr get-login-password --region us-east-1)
+          echo "{\"auths\":{\"$REGISTRY_URL\":{\"username\":\"AWS\",\"password\":\"$ECR_PASSWORD\"}}}" | base64 -w 0
           pwd;ls -la;
           # Use the -f flag to point to the environment-specific values file
           #helm upgrade install --dry-run --debug test .
