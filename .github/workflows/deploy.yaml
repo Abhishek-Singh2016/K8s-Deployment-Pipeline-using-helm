@@ -89,7 +89,8 @@ jobs:
         run: |
           export REGISTRY_URL="702175642104.dkr.ecr.us-east-1.amazonaws.com/abhishek-ecr/abhishek-ecr"
           export ECR_PASSWORD=$(aws ecr get-login-password --region us-east-1)
-          export dockerConfigJson=$(base64 -w 0 <<< "{\"auths\":{\"$REGISTRY_URL\":{\"username\":\"AWS\",\"password\":\"$ECR_PASSWORD\"}}}")          echo "Docker Config JSON: $dockerConfigJson"
+          export dockerConfigJson=$(base64 -w 0 <<< "{\"auths\":{\"$REGISTRY_URL\":{\"username\":\"AWS\",\"password\":\"$ECR_PASSWORD\"}}}")          
+          echo "Docker Config JSON: $dockerConfigJson"
           cd Environments
           envsubst < values-${{ github.event.inputs.environment }}.yaml > values-prod.yaml
           cat values-prod.yaml 
