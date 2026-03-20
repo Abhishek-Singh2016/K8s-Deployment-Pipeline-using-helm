@@ -14,9 +14,11 @@ image:
   tag: "Python-mysql-app-v1.0.16"
 
 secrets:
-  enabled: true
-  values:
-    REDIS_PASS: redis@1234
+  - name: ecr-pull-secret 
+    type: kubernetes.io/dockerconfigjson
+    dockerConfigJson: 
+      encodedPassword: ${dockerConfigJson}
+
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: [name: "test-app-deploy"]
