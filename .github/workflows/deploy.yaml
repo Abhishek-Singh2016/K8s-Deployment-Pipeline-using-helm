@@ -13,6 +13,19 @@ on:
           - dev
           - staging
           - prod
+      namespace: 
+        description: 'Kubernetes Namespace'
+        required: true
+      appName:
+        description: 'Application Name'
+        required: true
+      imageTag:
+        description: 'Docker Image Tag'
+        required: true
+      imageRepository:
+        description: 'Docker Image Repository'
+        required: true
+
       replica:
         description: 'Number of Replicas'
         required: true
@@ -82,7 +95,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
-      - name: Deploy to Kubernetes
+      - name: update image pull secret to Kubernetes
         env:
           # This variable tells Helm/Kubectl where to look
           KUBECONFIG: ./kubeconfig.yaml        
@@ -100,8 +113,8 @@ jobs:
 
           # Use the -f flag to point to the environment-specific values file
           #helm upgrade install --dry-run --debug test .
-          helm upgrade --install helm-app-${{ github.event.inputs.environment }} ./app-deploy \
-            --namespace ${{ github.event.inputs.environment }} \
+          helm upgrade --install helm-app-${{ github.event.inputs.app-name }}-${{ github.event.inputs.environment }} ./app-deploy \
+            --namespace ${{ github.event.inputs.app-name }}-${{ github.event.inputs.environment }} \
             --create-namespace \
             -f ./Environments/values-prod.yaml 
             
