@@ -14,7 +14,6 @@ image:
   tag: "Python-mysql-app-v1.0.16"
 
 secrets:
-  - name: ecr-pull-secret 
     type: kubernetes.io/dockerconfigjson
     dockerConfigJson: 
       encodedPassword: ${dockerConfigJson}
