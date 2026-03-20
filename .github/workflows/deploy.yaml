@@ -16,7 +16,7 @@ on:
       namespace: 
         description: 'Kubernetes Namespace'
         required: true
-      appName:
+      app-name:
         description: 'Application Name'
         required: true
       imageTag:
